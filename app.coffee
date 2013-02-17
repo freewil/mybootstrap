@@ -3,6 +3,7 @@ routes = require './routes'
 user = require './routes/user'
 http = require 'http'
 path = require 'path'
+assets = require 'connect-assets'
 
 app = express()
 
@@ -12,6 +13,21 @@ app.configure ->
   app.set 'view engine', 'jade'
   app.use express.favicon()
   app.use express.logger('dev')
+  
+  # setup options for connect-assets
+  if app.settings.env is 'production'
+    assetOptions = 
+      buildDir: 'public'
+      build: true
+      detectChanges: false
+    assets.cssCompilers.styl.compress = true
+    assets.cssCompilers.less.compress = true
+  else
+    assetOptions =
+      buildDir: false
+      build: false
+  
+  app.use assets assetOptions
   app.use express.bodyParser()
   app.use express.methodOverride()
   app.use app.router
@@ -19,6 +35,7 @@ app.configure ->
   
 app.configure 'development', ->
   app.use express.errorHandler()
+  app.locals.pretty = true
 
 app.get '/', routes.index
 app.get '/users', user.list
