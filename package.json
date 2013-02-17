@@ -1,0 +1,13 @@
+{
+  "name": "mybootstrap",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "NODE_ENV=development coffee app"
+  },
+  "dependencies": {
+    "express": "3.1.0",
+    "jade": "*",
+    "coffee-script": "~1.4.0"
+  }
+}
